@@ -9,7 +9,7 @@ class PromptInput(BaseModel):
 
 def generate_prompt(input: PromptInput):
     prompt = f"""
-        Generate unit test for the below given code assuming ${input.test_framework} library is installed. Don't use any additional libraries other than the testing library. Cover all edge cases and generate only output file content and not any extra note. If you want to include some notes, include it as comments in the generated code. Some informations about the code is given after the code.
+        Generate unit test for the below given code assuming ${input.test_framework} library is installed. Cover all edge cases and generate only output code as text, no need of any prefix suffix or any extra note. If you want to include some notes, include it as comments in the generated code. Some informations about the code is given after the code.
         code: {input.code}
         file extension: {input.extension}
     """
