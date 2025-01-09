@@ -4,6 +4,8 @@
   - invoice_upload_list
 
 # Problems with generated tests
-- too much mocking
+- too much mocking (can be helpeful for isolation)
 - import errors
-- some functions are misinterpreted by the llm
+- wrong assumptions about the imported types in the main file send (lack of context. sending imported files can help)
+- some functions are misinterpreted by the llm (a better model can help)
+- llm has no idea about the source code structure, a fine tuning may help here

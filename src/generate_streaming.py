@@ -1,6 +1,6 @@
-from transformers import AutoModelForCausalLM, AutoTokenizer
+from transformers import AutoModelForCausalLM, AutoTokenizer, TextIteratorStreamer
 from pydantic import BaseModel
-
+from threading import Thread
 
 class PromptInput(BaseModel):
     code: str
@@ -16,15 +16,20 @@ def generate_prompt(input: PromptInput):
     return prompt
 
 
-def generate_tests(input: PromptInput):
+def generate_tests_streaming(input: PromptInput):
     model_name = "Qwen/Qwen2.5-Coder-7B-Instruct"
-    
     model = AutoModelForCausalLM.from_pretrained(
         model_name,
         torch_dtype="auto",
         device_map="auto"
     )
     tokenizer = AutoTokenizer.from_pretrained(model_name)
+    streamer = TextIteratorStreamer(
+        tokenizer,
+        timeout=10,
+        skip_prompt=True,
+        skip_special_token=True
+    )
     prompt = generate_prompt(input)
     messages = [
         {"role": "system", "content": "You are qwen, a helpful assistant that will help me generate test cases"},
@@ -36,14 +41,17 @@ def generate_tests(input: PromptInput):
         add_generation_prompt=True
     )
     model_inputs = tokenizer([text], return_tensors="pt").to(model.device)
-    
-    generated_ids = model.generate(
-        **model_inputs,
-        max_new_tokens=1500
+    generate_kwargs = dict(
+        model_inputs,
+        streamer=streamer,
+        max_new_tokens=1500,
     )
-    generated_ids = [
-        output_ids[len(input_ids):] for input_ids, output_ids in zip(model_inputs.input_ids, generated_ids)
-    ]
-    
-    response = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
-    return response
+    t = Thread(target=model.generate, kwargs=generate_kwargs)
+    t.start()
+
+    partial_output = ""
+    for new_output in streamer:
+        partial_output += new_output
+        generated_ids = [output_ids[len(input_ids):] for input_ids, output_ids in zip(model_inputs.input_ids, partial_output)]
+        response = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
+        yield { "data": response }
