@@ -33,4 +33,4 @@ async def generate(body: GenerateRequestBody):
 @app.post("/generate_streaming")
 async def generate_streaming(body: GenerateRequestBody):
     logging.info(body)
-    return StreamingResponse(generate_tests_streaming(body))
+    return StreamingResponse(generate_tests_streaming(body), media_type="text/plain")
