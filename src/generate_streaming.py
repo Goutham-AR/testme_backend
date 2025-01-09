@@ -49,10 +49,10 @@ def generate_tests_streaming(input: PromptInput):
     t = Thread(target=model.generate, kwargs=generate_kwargs)
     t.start()
 
-    partial_output = ""
+    # partial_output = ""
     for new_output in streamer:
         print(new_output)
-        partial_output += new_output
+        # partial_output += new_output
         # generated_ids = [output_ids[len(input_ids):] for input_ids, output_ids in zip(model_inputs.input_ids, partial_output)]
         # response = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
-        yield partial_output
+        yield new_output
