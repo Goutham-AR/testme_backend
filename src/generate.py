@@ -63,7 +63,7 @@ def generate_tests_v2(input: PromptInputWithImport):
     generate_kwargs = dict(
         model_inputs,
         streamer=streamer,
-        max_new_tokens=1500,
+        max_new_tokens=2000,
     )
     t = Thread(target=model.generate, kwargs=generate_kwargs)
     t.start()
