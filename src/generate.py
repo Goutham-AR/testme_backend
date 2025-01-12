@@ -49,7 +49,7 @@ def generate_tests_v2(input: PromptInputWithImport):
         skip_prompt=True,
         skip_special_token=True
     )
-    prompt = generate_prompt_with_imports(input)
+    prompt = generate_prompt(input)
     messages = [
         {"role": "system", "content": "You are qwen, a helpful assistant that will help me generate test cases"},
         {"role": "user", "content": prompt}
