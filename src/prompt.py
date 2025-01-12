@@ -30,7 +30,7 @@ def generate_prompt_with_imports(input: PromptInputWithImport):
             content: {imp.code},
         """
     prompt = f"""
-        Generate unit test for the below code assuming ${input.testFramework} library is installed. Cover all edge cases and generate only output code, no need of any prefix, suffix or any extra notes. If you want to include some notes, include it as comments in the generated code. The extension of the code file is {input.extension}. The code is given between '<code>'. The content of local imports in the given code is given alongside its path after the code segment. Each imports are separated by ','. Also do not add '```typescript' at the beginning.
+        Generate unit test for the below code assuming ${input.testFramework} library is installed. Cover all edge cases and generate only output code, no need of any prefix, suffix or any extra notes. If you want to include some notes, include it as comments in the generated code. The extension of the code file is {input.extension}. The code is given between '<code>'. The content of local imports in the given code is given alongside its path after the code segment. Each imports are separated by ','. Also add appropriate imports at the top of the result.
         <code>
         {input.code}
         <code>
