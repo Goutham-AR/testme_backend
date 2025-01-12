@@ -69,5 +69,4 @@ def generate_tests_v2(input: PromptInputWithImport):
     t.start()
 
     for new_output in streamer:
-        print(new_output)
         yield new_output
