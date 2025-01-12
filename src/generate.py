@@ -3,16 +3,15 @@ from threading import Thread
 from transformers import AutoModelForCausalLM, AutoTokenizer, TextIteratorStreamer
 
 from .prompt import PromptInput, generate_prompt, PromptInputWithImport, generate_prompt_with_imports
+from .config import MODEL_NAME
 
 def generate_tests(input: PromptInput):
-    model_name = "Qwen/Qwen2.5-Coder-7B-Instruct"
-
     model = AutoModelForCausalLM.from_pretrained(
-        model_name,
+        MODEL_NAME,
         torch_dtype="auto",
         device_map="auto"
     )
-    tokenizer = AutoTokenizer.from_pretrained(model_name)
+    tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
     prompt = generate_prompt(input)
     messages = [
         {"role": "system", "content": "You are qwen, a helpful assistant that will help me generate test cases"},
@@ -36,13 +35,12 @@ def generate_tests(input: PromptInput):
     return response
 
 def generate_tests_v2(input: PromptInputWithImport):
-    model_name = "Qwen/Qwen2.5-Coder-7B-Instruct"
     model = AutoModelForCausalLM.from_pretrained(
-        model_name,
+        MODEL_NAME,
         torch_dtype="auto",
         device_map="auto"
     )
-    tokenizer = AutoTokenizer.from_pretrained(model_name)
+    tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
     streamer = TextIteratorStreamer(
         tokenizer,
         timeout=10,

@@ -1,10 +1,10 @@
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-model_name = "Qwen/Qwen2.5-Coder-7B-Instruct"
-    
+from .config import MODEL_NAME
+
 model = AutoModelForCausalLM.from_pretrained(
-    model_name,
+    MODEL_NAME,
     torch_dtype="auto",
     device_map="auto"
     )
-tokenizer = AutoTokenizer.from_pretrained(model_name)
+tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
