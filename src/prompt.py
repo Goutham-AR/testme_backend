@@ -1,14 +1,17 @@
 from pydantic import BaseModel
 
+
 class PromptInput(BaseModel):
     code: str
     extension: str
     testFramework: str
 
+
 class Import(BaseModel):
     path: str
     code: str
-    
+
+
 class PromptInputWithImport(PromptInput):
     imports: list[Import]
 
