@@ -4,11 +4,14 @@ from fastapi import FastAPI
 from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 
+from src.prompt import PromptInputWithSampleTest
+
 from .generate import (
     generate_tests,
     PromptInput,
     generate_tests_v2,
     PromptInputWithImport,
+    generate_tests_v3,
 )
 
 logging.basicConfig(level=logging.INFO)
@@ -21,6 +24,10 @@ class GenerateRequestBody(PromptInput):
 
 
 class GenerateRequestBodyV2(PromptInputWithImport):
+    pass
+
+
+class GenerateRequestBodyV3(PromptInputWithSampleTest):
     pass
 
 
@@ -46,3 +53,9 @@ async def generate(body: GenerateRequestBody):
 async def generate_v2(body: GenerateRequestBodyV2):
     logging.info(body)
     return StreamingResponse(generate_tests_v2(body), media_type="text/plain")
+
+
+@app.post("/generate/v3")
+async def generate_v3(body: GenerateRequestBodyV3):
+    logging.info(body)
+    return StreamingResponse(generate_tests_v3(body), media_type="text/plain")
