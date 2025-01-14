@@ -4,32 +4,21 @@ from fastapi import FastAPI
 from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 
-from src.prompt import PromptInputWithSampleTest
+from .validation import (
+    GenerateRequestBody,
+    GenerateRequestBodyV2,
+    GenerateRequestBodyV3,
+)
 
 from .generate import (
     generate_tests,
-    PromptInput,
     generate_tests_v2,
-    PromptInputWithImport,
     generate_tests_v3,
 )
 
 logging.basicConfig(level=logging.INFO)
 
 origins = ["*"]
-
-
-class GenerateRequestBody(PromptInput):
-    pass
-
-
-class GenerateRequestBodyV2(PromptInputWithImport):
-    pass
-
-
-class GenerateRequestBodyV3(PromptInputWithSampleTest):
-    pass
-
 
 app = FastAPI()
 
