@@ -13,6 +13,7 @@ class Import(BaseModel):
 
 
 class PromptInputWithImport(PromptInput):
+    framework: str
     imports: list[Import]
 
 
@@ -42,7 +43,7 @@ def generate_prompt(input: PromptInput):
 def generate_prompt_with_imports(input: PromptInputWithImport):
     imports = _get_imports_prompt(input.imports)
     prompt = f"""
-        Generate unit test for the below code assuming ${input.testFramework} library is installed. Cover all edge cases and generate only output code, no need of any prefix, suffix or any extra notes. If you want to include some notes, include it as comments in the generated code. The extension of the code file is {input.extension}. The code is given between '<code>'. The content of local imports in the given code is given alongside its path after the code segment. Each imports are separated by ','. Also add appropriate imports at the top of the result. The code is from a nextjs project.
+        Generate unit test for the below code assuming ${input.testFramework} library is installed. The code uses a framework called {input.framework}. Cover all edge cases and generate only output code, no need of any prefix, suffix or any extra notes. If you want to include some notes, include it as comments in the generated code. The extension of the code file is {input.extension}. The code is given between '<code>'. The content of local imports in the given code is given alongside its path after the code segment. Each imports are separated by ','. Also add appropriate imports at the top of the result.
         <code>
         {input.code}
         <code>
@@ -56,7 +57,7 @@ def generate_prompt_with_imports(input: PromptInputWithImport):
 def generate_prompt_with_sample_test(input: PromptInputWithSampleTest):
     imports = _get_imports_prompt(input.imports)
     prompt = f"""
-        Generate unit test for the below code assuming ${input.testFramework} library is installed. Cover all edge cases and generate only output code, no need of any prefix, suffix or any extra notes. If you want to include some notes, include it as comments in the generated code. The extension of the code file is {input.extension}. The code is given between '<code>'. The content of local imports in the given code is given alongside its path after the code segment. Each imports are separated by ','. Also add appropriate imports at the top of the result. A sample test file content is given between '<sample>'.
+        Generate unit test for the below code assuming ${input.testFramework} library is installed. The code uses a framework called {input.framework}. Cover all edge cases and generate only output code, no need of any prefix, suffix or any extra notes. If you want to include some notes, include it as comments in the generated code. The extension of the code file is {input.extension}. The code is given between '<code>'. The content of local imports in the given code is given alongside its path after the code segment. Each imports are separated by ','. Also add appropriate imports at the top of the result. A sample test file content is given between '<sample>'.
         <code>
         {input.code}
         <code>
