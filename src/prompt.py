@@ -82,7 +82,7 @@ def generate_new_prompt(input: PromptInputWithImport):
     imports = _get_imports_prompt(input.imports)
     prompt = f"""
 ## Overview
-You are a code assistant that accepts a {input.framework} source file. Your goal is to generate comprehensive unit tests in order to increase the code coverage against the source file.
+You are a code assistant that accepts a {input.extension} source file. Your goal is to generate comprehensive unit tests in order to increase the code coverage against the source file.
 
 Additional guidelines:
 - Carefully analyze the provided code. Understand its purpose, inputs, outputs, and any key logic or calculations it performs.

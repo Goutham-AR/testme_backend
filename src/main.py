@@ -19,7 +19,7 @@ from .generate import (
     generate_tests_v3,
 )
 
-logging.basicConfig(level=logging.ERROR)
+logging.basicConfig(level=logging.INFO)
 
 origins = ["*"]
 
@@ -55,5 +55,6 @@ async def generate_v3(body: GenerateRequestBodyV3):
 
 @app.post("/deepseek")
 async def prompts(body: PromptRequestBody):
+    logging.info(body)
     response = await generate_from_deepseek(body.prompts)
     return {"data": response}
