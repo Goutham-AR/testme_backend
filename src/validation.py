@@ -1,4 +1,11 @@
-from .prompt import PromptInput, PromptInputWithImport, PromptInputWithSampleTest
+from pydantic import BaseModel
+
+from .prompt import (
+    PromptInput,
+    PromptInputWithImport,
+    PromptInputWithSampleTest,
+    Prompt,
+)
 
 
 class GenerateRequestBody(PromptInput):
@@ -11,3 +18,7 @@ class GenerateRequestBodyV2(PromptInputWithImport):
 
 class GenerateRequestBodyV3(PromptInputWithSampleTest):
     pass
+
+
+class PromptRequestBody(BaseModel):
+    prompts: list[Prompt]

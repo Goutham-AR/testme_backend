@@ -4,10 +4,13 @@ from fastapi import FastAPI
 from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 
+from .deepseek import generate_from_deepseek
+
 from .validation import (
     GenerateRequestBody,
     GenerateRequestBodyV2,
     GenerateRequestBodyV3,
+    PromptRequestBody,
 )
 
 from .generate import (
@@ -16,7 +19,7 @@ from .generate import (
     generate_tests_v3,
 )
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.ERROR)
 
 origins = ["*"]
 
@@ -48,3 +51,9 @@ async def generate_v2(body: GenerateRequestBodyV2):
 async def generate_v3(body: GenerateRequestBodyV3):
     logging.info(body)
     return StreamingResponse(generate_tests_v3(body), media_type="text/plain")
+
+
+@app.post("/deepseek")
+async def prompts(body: PromptRequestBody):
+    response = await generate_from_deepseek(body.prompts)
+    return {"data": response}

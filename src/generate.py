@@ -5,9 +5,9 @@ from transformers import AutoModelForCausalLM, AutoTokenizer, TextIteratorStream
 from .prompt import (
     PromptInput,
     PromptInputWithSampleTest,
+    generate_new_prompt,
     generate_prompt,
     PromptInputWithImport,
-    generate_prompt_with_imports,
     generate_prompt_with_sample_test,
 )
 from .config import MODEL_NAME
@@ -48,7 +48,7 @@ def generate_tests_v2(input: PromptInputWithImport):
     streamer = TextIteratorStreamer(
         tokenizer, timeout=10, skip_prompt=True, skip_special_token=True
     )
-    prompt = generate_prompt_with_imports(input)
+    prompt = generate_new_prompt(input)
     messages = [
         {
             "role": "system",
