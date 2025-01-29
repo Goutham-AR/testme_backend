@@ -1,3 +1,4 @@
+import logging
 from threading import Thread
 
 from transformers import AutoModelForCausalLM, AutoTokenizer, TextIteratorStreamer
@@ -49,6 +50,7 @@ def generate_tests_v2(input: PromptInputWithImport):
         tokenizer, timeout=10, skip_prompt=True, skip_special_token=True
     )
     prompt = generate_new_prompt(input)
+    logging.info(f"prompt = {prompt}")
     messages = [
         {
             "role": "system",
